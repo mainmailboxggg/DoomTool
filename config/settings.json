@@ -7,6 +7,7 @@
     "doom2": "config/sources.doom2.manifest.json"
   },
   "mods_manifest": "config/mods.manifest.json",
-  "dm_bat": "modules/dm.bat"
+  "dm_bat": "modules/dm.bat",
+  "dm_marker": "state/dm_ran.marker"
 }
 

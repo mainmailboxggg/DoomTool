@@ -53,10 +53,8 @@ def main() -> None:
     mods = ModsManager(cfg, verbose=args.verbose)
     mods.install_all(dry_run=args.dry_run)
 
-    # Call dm.bat placeholder
-    if args.verbose:
-        print("[doom-tool] Invoking modules\\dm.bat ...")
-    cfg.run_dm_bat(dry_run=args.dry_run)
+    # Call dm.bat placeholder (only first successful run)
+    cfg.run_dm_bat(dry_run=args.dry_run, verbose=args.verbose)
 
     # Summarize
     if args.verbose:

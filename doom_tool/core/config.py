@@ -22,21 +22,45 @@ class AppConfig:
     sources_manifests: dict[str, Path]
     mods_manifest: str
     dm_bat: Path
+    dm_marker: Path
 
     def resolve_sources_manifest(self, game_id: str) -> Path:
         if game_id not in self.sources_manifests:
             raise KeyError(f"No sources manifest configured for game '{game_id}'")
         return self.sources_manifests[game_id]
 
-    def run_dm_bat(self, dry_run: bool) -> None:
-        # dm.bat is a placeholder hook that can be filled later to integrate your build/DM logic.
+    def run_dm_bat(self, dry_run: bool, verbose: bool = False) -> bool:
+        """
+        Runs dm.bat only once (first successful run) using a marker file.
+        Returns True if dm.bat executed during this run.
+        """
+        # Respect dry-run mode: never touch marker or downloads/installs further.
         if dry_run:
-            return
+            return False
 
+        if self.dm_marker.exists():
+            if verbose:
+                print(f"[doom-tool] Skipping modules\\dm.bat (marker exists): {self.dm_marker}")
+            return False
+
+        # dm.bat is a placeholder hook that can be filled later to integrate your build/DM logic.
         if not self.dm_bat.exists():
             raise FileNotFoundError(f"dm.bat not found: {self.dm_bat}")
 
-        subprocess.run(["cmd", "/c", str(self.dm_bat)], cwd=str(self.root_dir), check=False)
+        result = subprocess.run(
+            ["cmd", "/c", str(self.dm_bat)],
+            cwd=str(self.root_dir),
+            check=False,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"modules\\dm.bat failed with exit code {result.returncode}")
+
+        self.dm_marker.parent.mkdir(parents=True, exist_ok=True)
+        self.dm_marker.write_text("ok\n", encoding="utf-8")
+
+        if verbose:
+            print(f"[doom-tool] Ran modules\\dm.bat successfully; marker written: {self.dm_marker}")
+        return True
 
 
 def _resolve_path(root_dir: Path, p: str | Path) -> Path:
@@ -76,6 +100,7 @@ def load_config(config_path: Path) -> AppConfig:
     else:
         mods_manifest = str(_resolve_path(root_dir, mods_manifest_raw))
     dm_bat = _resolve_path(root_dir, raw.get("dm_bat", "modules/dm.bat"))
+    dm_marker = _resolve_path(root_dir, raw.get("dm_marker", "state/dm_ran.marker"))
 
     game_map = {gid: GameConfig(game_id=gid) for gid in games}
 
@@ -92,5 +117,6 @@ def load_config(config_path: Path) -> AppConfig:
         sources_manifests=sources_manifests,
         mods_manifest=mods_manifest,
         dm_bat=dm_bat,
+        dm_marker=dm_marker,
     )
 
