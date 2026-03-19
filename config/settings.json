@@ -1,0 +1,12 @@
+{
+  "download_dir": "downloads",
+  "install_dir": "games",
+  "games": ["doom1", "doom2"],
+  "sources_manifests": {
+    "doom1": "config/sources.doom1.manifest.json",
+    "doom2": "config/sources.doom2.manifest.json"
+  },
+  "mods_manifest": "config/mods.manifest.json",
+  "dm_bat": "modules/dm.bat"
+}
+

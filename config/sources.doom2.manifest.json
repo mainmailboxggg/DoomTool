@@ -1,0 +1,20 @@
+{
+  "game_id": "doom2",
+  "candidates": [
+    {
+      "id": "placeholder_1",
+      "url": "https://raw.githubusercontent.com/git/git/master/README.md",
+      "filename": "doom2_placeholder_download.txt",
+      "sha256": null,
+      "priority": 1
+    },
+    {
+      "id": "placeholder_2",
+      "url": "https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore",
+      "filename": "doom2_placeholder_download_2.txt",
+      "sha256": null,
+      "priority": 2
+    }
+  ]
+}
+
