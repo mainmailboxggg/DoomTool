@@ -1,0 +1,32 @@
+{
+  "project_name": "doom-1993",
+  "version": "",
+  "engine_compatibility": {
+    "base_engine": "idTech4",
+    "sub_system": "",
+    "render_path": ""
+  },
+  "asset_index": [
+    {
+      "id": "doom_e1m1_rebuilt",
+      "type": "map_data",
+      "path": "maps/e1m1_revised.map",
+      "hash": "8f2a1b3c"
+    },
+    {
+      "id": "imp_variant_highres",
+      "type": "model_def",
+      "path": "models/monsters/imp_elite.md5mesh"
+    }
+  ],
+  "editor_settings": {
+    "auto_sync_assets": true,
+    "sync_provider": "",
+    "local_cache_path": "",
+    "last_sync_timestamp": ""
+  },
+  "plugin_hooks": {
+    "on_load": "",
+    "on_render": ""
+  }
+}
